@@ -45,10 +45,7 @@ word_frequency::word_frequency(std::wistream& s)
 int word_frequency::frequency(const std::wstring & s)
 {
   const std::wregex reg(std::wstring(L"(\\s+|^)") + s + L"(\\s+|$)", std::regex_constants::icase);
-  int n = 0;
-  for (auto iter = std::regex_token_iterator<std::wstring::const_iterator>(std::cbegin(text), std::cend(text), reg, 0); iter != std::regex_token_iterator<std::wstring::const_iterator>(); ++iter)
-    ++n;
-  return n; 
+  return std::accumulate(std::regex_token_iterator<std::wstring::const_iterator>(std::cbegin(text), std::cend(text), reg, 0), std::regex_token_iterator<std::wstring::const_iterator>(), 0, [](auto acc, const auto&) {return ++acc; });;
 }
 
 int word_frequency::count()
