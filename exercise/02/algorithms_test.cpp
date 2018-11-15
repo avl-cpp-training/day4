@@ -240,7 +240,7 @@ public:
     //awful, but its oneliner
     auto smallest_difference = *std::min_element(
       std::next(std::adjacent_difference(atp_points.begin(), atp_points.end(), atp_points.begin(),
-                                         [](auto const& a, auto const& b) { return std::abs(a - b); }), -atp_points.size()), atp_points.end());
+                                         [](auto const& a, auto const& b) { return std::abs(a - b); }), -(atp_points.size()-1)), atp_points.end());
     Assert::AreEqual(15, smallest_difference);
   }
 };
