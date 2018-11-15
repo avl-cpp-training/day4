@@ -4,7 +4,7 @@ Korištenje std::copy za učitavanje neznane količine podataka i za spremanje /
 
 ### exercise 01 - standardna biblioteka - containeri
 
-Bez korištenje standardnih algoritama implementirajte zadane funkcije i klase da svi testovi prođu.
+Bez korištenja standardnih algoritama implementirajte zadane funkcije i klase da svi testovi prođu.
 
 ### exercise 02 - standardna biblioteka - algoritmi
 
