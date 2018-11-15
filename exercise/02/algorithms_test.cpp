@@ -70,21 +70,23 @@ public:
     Assert::AreEqual(1000, v[2]);
   }
 
-  //TEST_METHOD(test_03b)
-  //{
-  //  int x[] = {3, 5, 10};
-  //  std::vector<int> y = {4, 12, 10};
-  //  std::vector<double> d;
+  TEST_METHOD(test_03b)
+  {
+    int x[] = {3, 5, 10};
+    std::vector<int> y = {4, 12, 10};
+    std::vector<double> d;
 
-  //  // TODO: calculate distances from origin (from x and y collections) to new vector
-  //  auto dist = [](int a, int b) { return std::sqrt(std::pow(a, 2) + std::pow(b, 2)); };
-  //  std::transform();
+    // TODO: calculate distances from origin (from x and y collections) to new vector
+    std::transform(std::begin(x), std::end(x), y.cbegin(), std::back_inserter(d), [](int a, int b)
+    {
+      return std::sqrt(std::pow(a, 2) + std::pow(b, 2));
+    });
 
-  //  Assert::AreEqual(3u, d.size());
-  //  Assert::AreEqual(5., d[0]);
-  //  Assert::AreEqual(13., d[1]);
-  //  Assert::AreEqual(sqrt(200), d[2]);
-  //}
+    Assert::AreEqual(3u, d.size());
+    Assert::AreEqual(5., d[0]);
+    Assert::AreEqual(13., d[1]);
+    Assert::AreEqual(sqrt(200), d[2]);
+  }
 
   TEST_METHOD(test_04a)
   {
@@ -147,13 +149,22 @@ public:
     Assert::AreEqual(2, number_in_first_quadrant);
   }
 
-  
-    TEST_METHOD(test_06)
+
+  TEST_METHOD(test_06)
+  {
+    std::vector<int> v{33, 16, 24, 41, 25, 19, 9};
+    auto first_prime = *std::find_if(v.cbegin(), v.cend(), [](int elem)
     {
-      std::vector<int> v{33, 16, 24, 41, 25, 19, 9};
-      auto first_prime = std::find(v.cbegin(), v.cend(), );
-        Assert::AreEqual(41, first_prime);
-    }
+      int threshold = std::sqrt(elem);
+      for (int i = 2; i <= threshold; ++i)
+      {
+        if (elem % i == 0) return false;
+      }
+      return true;
+    });
+    Assert::AreEqual(41, first_prime);
+  }
+
   //
   //  TEST_METHOD(test_07a)
   //  {
