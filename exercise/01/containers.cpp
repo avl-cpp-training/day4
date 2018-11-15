@@ -56,7 +56,7 @@ word_frequency::word_frequency(std::wistream& in)
 int word_frequency::frequency(const std::wstring& s)
 {
   const auto find_s = to_lower(s);
-  if (freq_.find(to_lower(find_s)) != freq_.end()) return freq_[find_s];
+  if (freq_.find(find_s) != freq_.end()) return freq_[find_s];
   return 0;
 }
 
