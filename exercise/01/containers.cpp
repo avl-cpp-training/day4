@@ -8,7 +8,7 @@ namespace
   std::wstring to_lower(std::wstring const& s)
   {
     std::wstring ret{};
-    for (auto& chr : s) ret += ::towlower(chr);
+    for (auto& chr : s) ret += towlower(chr);
     return ret;
   }
 }
@@ -55,13 +55,11 @@ word_frequency::word_frequency(std::wistream& in)
 
 int word_frequency::frequency(const std::wstring& s)
 {
-  const auto find_s = to_lower(s);
-  if (freq_.find(find_s) != freq_.end()) return freq_[find_s];
-  return 0;
+  const auto find_s = freq_.find(to_lower(s));
+  return find_s != freq_.end() ? find_s->second : 0;
 }
 
 int word_frequency::count() const noexcept
 {
- return freq_.size();
+  return freq_.size();
 }
-
