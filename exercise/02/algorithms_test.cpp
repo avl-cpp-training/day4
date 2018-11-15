@@ -165,23 +165,34 @@ public:
     Assert::AreEqual(41, first_prime);
   }
 
-  //
-  //  TEST_METHOD(test_07a)
-  //  {
-  //    std::vector<double> v{1e10, 8, -11.23, 0, 1e10, 1e10, 1e10, 0, 99};
-  //    // TODO: change every invalid value (1e10) with -1 
-  //    Assert::AreEqual(-1., v[0]);
-  //    Assert::AreEqual(-1., v[4]);
-  //    Assert::AreEqual(-1., v[6]);
-  //  }
-  //
-  //  TEST_METHOD(test_07b)
-  //  {
-  //    std::wstring s(L"ponedjeljak");
-  //    // TODO: change every vowel with x 
-  //    Assert::AreEqual(L"pxnxdjxljxk", s.c_str());
-  //  }
-  //
+
+  TEST_METHOD(test_07a)
+  {
+    std::vector<double> v{1e10, 8, -11.23, 0, 1e10, 1e10, 1e10, 0, 99};
+
+    // TODO: change every invalid value (1e10) with -1 
+    std::replace(v.begin(), v.end(), 1e10, -1.);
+
+    Assert::AreEqual(-1., v[0]);
+    Assert::AreEqual(-1., v[4]);
+    Assert::AreEqual(-1., v[6]);
+  }
+
+  TEST_METHOD(test_07b)
+  {
+    std::wstring s(L"ponedjeljak");
+
+    // TODO: change every vowel with x 
+    std::replace_if(s.begin(), s.end(), [](auto const& chr)
+    {
+      std::wstring set{L"AEIOUaeiou"};
+      std::wstring search_for{ chr };
+      return std::includes(set.cbegin(), set.cend(), search_for.cbegin(), search_for.cend());
+    }, L"x");
+
+    Assert::AreEqual(L"pxnxdjxljxk", s.c_str());
+  }
+
   //  TEST_METHOD(test_08a)
   //  {
   //    std::vector<double> v{1e10, 8, -11.23, 0, 1e10, 1e10, 1e10, 0, 99};
