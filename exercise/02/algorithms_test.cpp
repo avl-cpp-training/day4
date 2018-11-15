@@ -188,7 +188,7 @@ public:
       std::wstring set{L"AEIOUaeiou"};
       std::wstring search_for{ chr };
       return std::includes(set.cbegin(), set.cend(), search_for.cbegin(), search_for.cend());
-    }, L"x");
+    }, L'x');
 
     Assert::AreEqual(L"pxnxdjxljxk", s.c_str());
   }
