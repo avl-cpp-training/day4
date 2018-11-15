@@ -32,13 +32,13 @@ public:
 		Assert::AreEqual(8, list_nth_element(c, 8));
 	}
 
-	TEST_METHOD(list_sort_descending)
-	{
-		std::list<int> c { 7, 1, 5, 3, 4, 2 };
-		list_sort_desc(c);
-		Assert::AreEqual(6u, c.size());
-		Assert::IsTrue(std::is_sorted(c.rbegin(), c.rend()));
-	}
+	//TEST_METHOD(list_sort_descending)
+	//{
+	//	std::list<int> c { 7, 1, 5, 3, 4, 2 };
+	//	list_sort_desc(c);
+	//	Assert::AreEqual(6u, c.size());
+	//	Assert::IsTrue(std::is_sorted(c.rbegin(), c.rend()));
+	//}
 
 	TEST_METHOD(unique_values_test)
 	{
