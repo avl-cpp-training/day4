@@ -13,17 +13,17 @@ namespace
   }
 }
 
-void remove_element(std::vector<int>& v, int index)
+void remove_element(std::vector<int>& v, const int index)
 {
   v.erase(v.cbegin() + index);
 }
 
-void input_element(std::vector<std::wstring>& v, int index, const std::wstring& value)
+void input_element(std::vector<std::wstring>& v, const int index, const std::wstring& value)
 {
   v.insert(v.cbegin() + index, value);
 }
 
-int list_nth_element(const std::list<int>& c, int index)
+int list_nth_element(const std::list<int>& c, const int index)
 {
   auto it = c.cbegin();
   std::advance(it, index);
@@ -60,7 +60,7 @@ int word_frequency::frequency(const std::wstring& s)
   return 0;
 }
 
-int word_frequency::count()
+int word_frequency::count() const noexcept
 {
  return freq_.size();
 }

@@ -17,7 +17,7 @@ class word_frequency
 private:
   std::map<std::wstring, unsigned int> freq_;
 public:
-	word_frequency(std::wistream&);
+  explicit word_frequency(std::wistream&);
 	int frequency(const std::wstring& s);
-	int count();
+	int count() const noexcept;
 };
