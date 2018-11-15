@@ -38,7 +38,7 @@ word_frequency::word_frequency(std::wistream& in)
   std::wstring s{};
   while (in >> s)
   {
-    for (auto& chr : s) chr = ::tolower(chr);
+    for (auto& chr : s) chr = ::towlower(chr);
     freq_[s] += 1;
   }
 }
