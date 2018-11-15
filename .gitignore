@@ -16,3 +16,5 @@
 *.exp
 *.user
 *.ilk
+*.iobj
+*.ipdb
