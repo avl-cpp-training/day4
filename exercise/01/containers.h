@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <map>
 
 void remove_element(std::vector<int>& v, int index);
 void input_element(std::vector<std::wstring>& v, int index, const std::wstring& value);
@@ -9,12 +10,15 @@ void input_element(std::vector<std::wstring>& v, int index, const std::wstring& 
 int list_nth_element(const std::list<int>& c, int index);
 void list_sort_desc(std::list<int>& c);
 
-int unique_numbers(std::wistream&);
+int unique_numbers(std::wistream& stream);
 
 class word_frequency
 {
 public:
 	word_frequency(std::wistream&);
-	int frequency(const std::wstring& s);
-	int count();
+	int frequency(const std::wstring& s) const;
+	int count() const noexcept;
+
+private:
+  std::map<std::wstring, int> freq;
 };
