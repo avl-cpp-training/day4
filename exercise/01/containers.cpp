@@ -47,7 +47,7 @@ int unique_numbers(std::wistream& stream)
   int elem;
   std::set<int> tmp_s;
   while (stream >> elem)
-  {;
+  {
     tmp_s.insert(elem);
   }
   return tmp_s.size();
@@ -59,11 +59,7 @@ word_frequency::word_frequency(std::wistream& stream)
   while (stream >> elem)
   {
     elem = to_lower(elem);
-    auto it = freq.find(elem);
-    if (it != freq.end())
-      ++it->second;
-    else
-      freq.insert(std::make_pair(elem, 1));
+    freq[elem]++;
   }
 }
 
