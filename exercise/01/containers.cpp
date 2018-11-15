@@ -2,6 +2,17 @@
 #include <unordered_set>
 #include <locale>
 
+
+namespace
+{
+  std::wstring to_lower(std::wstring const& s)
+  {
+    std::wstring ret{};
+    for (auto& chr : s) ret += ::towlower(chr);
+    return ret;
+  }
+}
+
 void remove_element(std::vector<int>& v, int index)
 {
   v.erase(v.cbegin() + index);
@@ -21,7 +32,7 @@ int list_nth_element(const std::list<int>& c, int index)
 
 void list_sort_desc(std::list<int>& c)
 {
-  c.sort(std::greater<int>());
+  c.sort(std::greater<>());
 }
 
 int unique_numbers(std::wistream& ins)
@@ -38,14 +49,14 @@ word_frequency::word_frequency(std::wistream& in)
   std::wstring s{};
   while (in >> s)
   {
-    for (auto& chr : s) chr = ::towlower(chr);
-    freq_[s] += 1;
+    freq_[to_lower(s)] += 1;
   }
 }
 
 int word_frequency::frequency(const std::wstring& s)
 {
-  if (freq_.find(s) != freq_.end()) return freq_[s];
+  const auto find_s = to_lower(s);
+  if (freq_.find(to_lower(find_s)) != freq_.end()) return freq_[find_s];
   return 0;
 }
 
@@ -53,3 +64,4 @@ int word_frequency::count()
 {
  return freq_.size();
 }
+
