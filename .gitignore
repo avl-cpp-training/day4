@@ -18,3 +18,5 @@
 *.ilk
 *.iobj
 *.ipdb
+*.db-shm
+*.db-wal
