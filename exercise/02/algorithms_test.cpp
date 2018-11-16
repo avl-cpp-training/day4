@@ -45,15 +45,16 @@ public:
 		Assert::AreEqual(19, v[9]);
 	}
 
-	//TEST_METHOD(test_03a)
-	//{
-	//	std::vector<int> v = { 1, 5, 10 } ;
-	//	// TODO: change all values in a vector
-	//	Assert::AreEqual(3u, v.size());
-	//	Assert::AreEqual(1, v[0]);
-	//	Assert::AreEqual(125, v[1]);
-	//	Assert::AreEqual(1000, v[2]);
-	//}
+	TEST_METHOD(test_03a)
+	{
+		std::vector<int> v = { 1, 5, 10 } ;
+		// TODO: change all values in a vector
+		std::transform(v.begin(), v.end(), v.begin(), [](int val) { return val * val * val; });
+		Assert::AreEqual(3u, v.size());
+		Assert::AreEqual(1, v[0]);
+		Assert::AreEqual(125, v[1]);
+		Assert::AreEqual(1000, v[2]);
+	}
 	TEST_METHOD(test_03b)
 	{
 		int x[] = { 3, 5, 10 };
@@ -80,13 +81,14 @@ public:
 		auto res = std::accumulate(v.begin(), v.end(), std::wstring(L"GO "));
 		Assert::AreEqual(L"GO AVL!", res.c_str());
 	}
-	//TEST_METHOD(test_04c)
-	//{
-	//	struct person { std::wstring name; int age; };
-	//	std::vector<person> v{ {L"Pero", 33}, {L"Iva", 25} };
-	//	auto total_age = // TODO: sum of all ages
-	//	Assert::AreEqual(58, total_age);
-	//}
+	TEST_METHOD(test_04c)
+	{
+		struct person { std::wstring name; int age; };
+		std::vector<person> v{ {L"Pero", 33}, {L"Iva", 25} };
+		// TODO: sum of all ages
+		auto total_age = std::accumulate(v.begin(), v.end(), 0, [](const int& a, const person& p) { return a + p.age; });
+		Assert::AreEqual(58, total_age);
+	}
 
 	TEST_METHOD(test_05a)
 	{
@@ -97,7 +99,7 @@ public:
 	TEST_METHOD(test_05b)
 	{
 		std::vector<double> v { 1.5, 8, -11.23, 0, 1e10, 1e10, 1e10, 0, 99 };
-		auto number_of_invalid = std::count_if(v.begin(), v.end(), [](double v) {return isgreater(v, 100.0); }); // ???
+		auto number_of_invalid = std::count(v.begin(), v.end(), 1e10);
 		Assert::AreEqual(3, number_of_invalid);
 	}
 	TEST_METHOD(test_05c)
@@ -108,17 +110,27 @@ public:
 		Assert::AreEqual(2, number_in_first_quadrant);
 	}
 
-	//TEST_METHOD(test_06)
-	//{
-	//	std::vector<int> v { 33, 16, 24, 41, 25, 19, 9 };
-	//	auto first_prime = // TODO: 
-	//	Assert::AreEqual(41, first_prime);
-	//}
+	bool is_prime(int n)
+	{
+		for (int i = 2; i <= n / 2; ++i)
+		{
+			if (n%i == 0)
+				return false;
+		}
+		return true;
+	}
+
+	TEST_METHOD(test_06)
+	{
+		std::vector<int> v { 33, 16, 24, 41, 25, 19, 9 };
+		auto first_prime = *std::find_if(v.begin(), v.end(), [&](int val) {return is_prime(val); });
+		Assert::AreEqual(41, first_prime);
+	}
 	TEST_METHOD(test_07a)
 	{
 		std::vector<double> v{ 1e10, 8, -11.23, 0, 1e10, 1e10, 1e10, 0, 99 };
 		// TODO: change every invalid value (1e10) with -1 
-		std::replace_if(v.begin(), v.end(), [](double v) {return isgreater(v, 100.0); }, -1.0);
+		std::replace(v.begin(), v.end(), 1e10, -1.0);
 		Assert::AreEqual(-1., v[0]);
 		Assert::AreEqual(-1., v[4]);
 		Assert::AreEqual(-1., v[6]);
@@ -139,71 +151,94 @@ public:
 		std::replace_if(s.begin(), s.end(), [&](wchar_t c) { return is_vowel(c); }, 'x');
 		Assert::AreEqual(L"pxnxdjxljxk", s.c_str());
 	}
-	//TEST_METHOD(test_08a)
-	//{
-	//	std::vector<double> v{ 1e10, 8, -11.23, 0, 1e10, 1e10, 1e10, 0, 99 };
-	//	// TODO: delete all invalid values (1e10)
-	//	Assert::AreEqual(5u, v.size());
-	//	Assert::AreEqual(8., v[0]);
-	//	Assert::AreEqual(99., v[4]);
-	//}
+	TEST_METHOD(test_08a)
+	{
+		std::vector<double> v{ 1e10, 8, -11.23, 0, 1e10, 1e10, 1e10, 0, 99 };
+		// TODO: delete all invalid values (1e10)
+		v.erase(std::remove(v.begin(), v.end(), 1e10), v.end());
+		Assert::AreEqual(5u, v.size());
+		Assert::AreEqual(8., v[0]);
+		Assert::AreEqual(99., v[4]);
+	}
 
-	//TEST_METHOD(test_08b)
-	//{
-	//	std::wstring s(L"ponedjeljak");
-	//	// TODO: delete all vowels 
-	//	Assert::AreEqual(L"pndjljk", s.c_str());
-	//}
-	//TEST_METHOD(test_09)
-	//{
-	//	struct exam { std::wstring name; int points, grade; };
-	//	std::vector<exam> v{ {L"Pero", 55, 2}, {L"Iva", 93, 5}, {L"Marko", 89, 5} };
-	//	// TODO: sort vector by grade, then by points
-	//	Assert::AreEqual(L"Iva", v[0].name.c_str());
-	//	Assert::AreEqual(L"Marko", v[1].name.c_str());
-	//	Assert::AreEqual(L"Pero", v[2].name.c_str());
+	TEST_METHOD(test_08b)
+	{
+		std::wstring s(L"ponedjeljak");
+		// TODO: delete all vowels 
+		s.erase(std::remove_if(s.begin(), s.end(), [&](wchar_t c) { return is_vowel(c); }), s.end());
+		Assert::AreEqual(L"pndjljk", s.c_str());
+	}
 
-	//}
-	//TEST_METHOD(test_10a)
-	//{
-	//	// nth_element
-	//	std::vector<double> v(2e7);
-	//	// half of the values less than 1000
-	//	std::generate(v.begin(), v.begin() + v.size() / 2, []() { return rand() % 1000; });
-	//	// other half of the values greater than 1000
-	//	std::generate(v.begin() + v.size() / 2, v.end(), []() { return 1001 + rand() % 1000; });
-	//	v.push_back(1000); // to be median
-	//	std::random_shuffle(v.begin(), v.end());
+	TEST_METHOD(test_09)
+	{
+		struct exam
+		{
+			std::wstring name; int points, grade; 
+			bool operator<(const exam& other)
+			{
+				if (grade < other.grade) return true;
+				if (grade > other.grade) return false;
+				if (points < other.points) return true;
+				if (points > other.points) return false;
+				return false;
+			}
+		};
 
-	//	using namespace std::chrono;
-	//	auto t1 = steady_clock::now();
-	//	// TODO: put median value in the middle of vector. fast.
-	//	auto t2 = steady_clock::now();
-	//	auto dur = duration_cast<milliseconds>(t2 - t1);
-	//	Assert::AreEqual(1000., v[v.size() / 2]); // median value
-	//	Assert::IsTrue(dur.count() < 1000, std::to_wstring(dur.count()).c_str()); // faster than 1 second
-	//}
-	//TEST_METHOD(test_10b)
-	//{
-	//	struct employee { std::wstring name; int salary; };
-	//	std::vector<employee> v{ {L"Iva", 2000}, {L"Pero", 1000}, {L"Marko", 10000} };
-	//	// TODO: put employee with median salary in the middle of vector
-	//	std::nth_element(v.begin(), v.begin() + v.size() / 2, v.end(), [](const employee& a, const employee& b) { return a.salary < b.salary; });
-	//	Assert::AreEqual(L"Iva", v[v.size() / 2].name.c_str()); // median_salary
-	//}
-	//TEST_METHOD(test_12)
-	//{
-	//	std::vector<double> v{ 11, 0.5, -97.23, -23.11, 48.78, 22.96, -77 };
-	//	auto smallest_value = // TODO: 
-	//	Assert::AreEqual(-97.23, smallest_value);
-	//	auto largest_value = // TODO: 
-	//	Assert::AreEqual(48.78, largest_value);
-	//}
-	//TEST_METHOD(test_13)
-	//{
-	//	std::vector<int> atp_points { 8445, 7480, 6220, 5300, 5285 };
-	//	// the most interesting match is the one with the smallest difference
-	//	auto smallest_difference = // TODO: 
-	//	Assert::AreEqual(15, smallest_difference);
-	//}
+		std::vector<exam> v{ {L"Pero", 55, 2}, {L"Iva", 93, 5}, {L"Marko", 89, 5} };
+		// TODO: sort vector by grade, then by points
+		std::sort(v.begin(), v.end());
+		std::reverse(v.begin(), v.end());
+		Assert::AreEqual(L"Iva", v[0].name.c_str());
+		Assert::AreEqual(L"Marko", v[1].name.c_str());
+		Assert::AreEqual(L"Pero", v[2].name.c_str());
+	}
+
+	TEST_METHOD(test_10a)
+	{
+		// nth_element
+		std::vector<double> v(2e7);
+		// half of the values less than 1000
+		std::generate(v.begin(), v.begin() + v.size() / 2, []() { return rand() % 1000; });
+		// other half of the values greater than 1000
+		std::generate(v.begin() + v.size() / 2, v.end(), []() { return 1001 + rand() % 1000; });
+		v.push_back(1000); // to be median
+		std::random_shuffle(v.begin(), v.end());
+
+		using namespace std::chrono;
+		int half_size = v.size() / 2;
+		auto t1 = steady_clock::now();
+		// TODO: put median value in the middle of vector. fast.
+		std::nth_element(v.begin(), v.begin() + half_size, v.end());
+		auto t2 = steady_clock::now();
+		auto dur = duration_cast<milliseconds>(t2 - t1);
+		Assert::AreEqual(1000., v[v.size() / 2]); // median value
+		Assert::IsTrue(dur.count() < 1000, std::to_wstring(dur.count()).c_str()); // faster than 1 second
+	}
+	TEST_METHOD(test_10b)
+	{
+		struct employee { std::wstring name; int salary; };
+		std::vector<employee> v{ {L"Iva", 2000}, {L"Pero", 1000}, {L"Marko", 10000} };
+		// TODO: put employee with median salary in the middle of vector
+
+		std::nth_element(v.begin(), v.begin() + v.size() / 2, v.end(), [](const employee& a, const employee& b) { return a.salary < b.salary; });
+		Assert::AreEqual(L"Iva", v[v.size() / 2].name.c_str()); // median_salary
+	}
+	TEST_METHOD(test_12)
+	{
+		std::vector<double> v{ 11, 0.5, -97.23, -23.11, 48.78, 22.96, -77 };
+		auto smallest_value = *std::min_element(v.begin(), v.end());
+		Assert::AreEqual(-97.23, smallest_value);
+		auto largest_value = *std::max_element(v.begin(), v.end());
+		Assert::AreEqual(48.78, largest_value);
+	}
+	TEST_METHOD(test_13)
+	{
+		std::vector<int> atp_points { 8445, 7480, 6220, 5300, 5285 };
+		// the most interesting match is the one with the smallest difference
+		std::sort(atp_points.begin(), atp_points.end());
+		std::vector<int> diff;
+		std::adjacent_difference(atp_points.begin(), atp_points.end(), std::back_inserter(diff));
+		auto smallest_difference = *std::min_element(diff.begin(), diff.end());
+		Assert::AreEqual(15, smallest_difference);
+	}
 };
