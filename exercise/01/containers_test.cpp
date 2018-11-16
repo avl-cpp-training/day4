@@ -40,14 +40,14 @@ public:
 		Assert::IsTrue(std::is_sorted(c.rbegin(), c.rend()));
 	}
 
-	TEST_METHOD(unique_values_test)
+  TEST_METHOD(unique_values_test)
 	{
 		Assert::AreEqual(5, unique_numbers(std::wstringstream(L"-9 -7 -5 -3 -1")));
 		Assert::AreEqual(3, unique_numbers(std::wstringstream(L"1 2 3 2 3 2 1 2 3")));
 		Assert::AreEqual(2, unique_numbers(std::wstringstream(L"0 1 1 0 0 1 0")));
 	}
 
-	TEST_METHOD(word_frequency_test)
+  TEST_METHOD(word_frequency_test)
 	{
 		std::wstringstream ss(L"Lorem ipsum dolor sit amet lorem ipsum dolor");
 		word_frequency h(ss);
