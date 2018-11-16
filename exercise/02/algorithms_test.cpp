@@ -145,8 +145,19 @@ public:
 	TEST_METHOD(test_06)
 	{
 		std::vector<int> v { 33, 16, 24, 41, 25, 19, 9 };
-		//auto first_prime = // TODO: 
-		//Assert::AreEqual(41, first_prime);
+		auto first_prime = *std::find_if(v.begin(), v.end(), [](int value)
+		{
+			for (int i = 2; i < sqrt(value) + 1; ++i)
+			{
+				if (value % i == 0)
+				{
+					return false;
+				}
+			}
+
+			return true;
+		});// TODO: 
+		Assert::AreEqual(41, first_prime);
 	}
 	TEST_METHOD(test_07a)
 	{
@@ -167,7 +178,7 @@ public:
 	TEST_METHOD(test_08a)
 	{
 		std::vector<double> v{ 1e10, 8, -11.23, 0, 1e10, 1e10, 1e10, 0, 99 };
-		// TODO: delete all invalid values (1e10)
+		v.erase(std::remove(v.begin(), v.end(), 1e10), v.end());// TODO: delete all invalid values (1e10)
 		Assert::AreEqual(5u, v.size());
 		Assert::AreEqual(8., v[0]);
 		Assert::AreEqual(99., v[4]);
@@ -176,14 +187,22 @@ public:
 	TEST_METHOD(test_08b)
 	{
 		std::wstring s(L"ponedjeljak");
-		// TODO: delete all vowels 
+		s.erase(std::remove_if(s.begin(), s.end(), isVowel), s.end());// TODO: delete all vowels 
 		Assert::AreEqual(L"pndjljk", s.c_str());
 	}
 	TEST_METHOD(test_09)
 	{
 		struct exam { std::wstring name; int points, grade; };
 		std::vector<exam> v{ {L"Pero", 55, 2}, {L"Iva", 93, 5}, {L"Marko", 89, 5} };
-		// TODO: sort vector by grade, then by points
+		std::sort(v.begin(), v.end(), [](exam value1, exam value2)
+		{
+			if (value1.grade == value2.grade)
+			{
+				return value1.points > value2.points;
+			}
+			
+			return value1.grade > value2.grade;
+		});// TODO: sort vector by grade, then by points
 		Assert::AreEqual(L"Iva", v[0].name.c_str());
 		Assert::AreEqual(L"Marko", v[1].name.c_str());
 		Assert::AreEqual(L"Pero", v[2].name.c_str());
@@ -203,6 +222,7 @@ public:
 		using namespace std::chrono;
 		auto t1 = steady_clock::now();
 		// TODO: put median value in the middle of vector. fast.
+		std::nth_element(v.begin(), v.begin() + v.size() / 2, v.end(), [](const double value1, const double value2) { return value1 < value2; });
 		auto t2 = steady_clock::now();
 		auto dur = duration_cast<milliseconds>(t2 - t1);
 		Assert::AreEqual(1000., v[v.size() / 2]); // median value
@@ -219,16 +239,18 @@ public:
 	TEST_METHOD(test_12)
 	{
 		std::vector<double> v{ 11, 0.5, -97.23, -23.11, 48.78, 22.96, -77 };
-		//auto smallest_value = // TODO: 
-		//Assert::AreEqual(-97.23, smallest_value);
-		//auto largest_value = // TODO: 
-		//Assert::AreEqual(48.78, largest_value);
+		auto smallest_value = *std::min_element(v.begin(), v.end());// TODO: 
+		Assert::AreEqual(-97.23, smallest_value);
+		auto largest_value = *std::max_element(v.begin(), v.end());// TODO: 
+		Assert::AreEqual(48.78, largest_value);
 	}
 	TEST_METHOD(test_13)
 	{
 		std::vector<int> atp_points { 8445, 7480, 6220, 5300, 5285 };
+		std::vector<int> diffs;
 		// the most interesting match is the one with the smallest difference
-		//auto smallest_difference = // TODO: 
-		//Assert::AreEqual(15, smallest_difference);
+		std::adjacent_difference(atp_points.rbegin(), atp_points.rend(), std::back_inserter(diffs));
+		auto smallest_difference = *std::min_element(diffs.begin(), diffs.end());// TODO: 
+		Assert::AreEqual(15, smallest_difference);
 	}
 };
