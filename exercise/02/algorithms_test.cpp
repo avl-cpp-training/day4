@@ -105,9 +105,14 @@ public:
 
 	TEST_METHOD(test_06)
 	{
-		//std::vector<int> v { 33, 16, 24, 41, 25, 19, 9 };
-  //  auto first_prime = std::find_if(v.begin(), v.end(), [](const int& num) {return true; });
-		//Assert::AreEqual(41, first_prime);
+		std::vector<int> v { 33, 16, 24, 41, 25, 19, 9 };
+    auto first_prime = *(std::find_if(v.begin(), v.end(), [](const int& num) { int flag = true; for (int i = 2; i <= sqrt(num); i++) {
+      if (num % i == 0) {
+        flag = false;
+        break;
+      }
+    } return flag; }));
+		Assert::AreEqual(41, first_prime);
 	}
 	TEST_METHOD(test_07a)
 	{
