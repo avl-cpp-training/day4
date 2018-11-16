@@ -17,4 +17,6 @@ public:
 	word_frequency(std::wistream&);
 	int frequency(const std::wstring& s);
 	int count();
+private:
+	std::vector<std::wstring> words;
 };
