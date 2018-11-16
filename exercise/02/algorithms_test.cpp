@@ -235,10 +235,8 @@ public:
 	{
 		std::vector<int> atp_points { 8445, 7480, 6220, 5300, 5285 };
 		// the most interesting match is the one with the smallest difference
-		std::sort(atp_points.begin(), atp_points.end());
-		std::vector<int> diff;
-		std::adjacent_difference(atp_points.begin(), atp_points.end(), std::back_inserter(diff));
-		auto smallest_difference = *std::min_element(diff.begin(), diff.end());
+		std::adjacent_difference(atp_points.begin(), atp_points.end(), atp_points.begin(), [](const int x, const int y) {return abs(x - y); });
+		auto smallest_difference = *std::min_element(atp_points.begin(), atp_points.end());
 		Assert::AreEqual(15, smallest_difference);
 	}
 };
