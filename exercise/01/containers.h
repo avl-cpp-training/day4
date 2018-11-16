@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <map>
 
 void remove_element(std::vector<int>& v, int index);
 void input_element(std::vector<std::wstring>& v, int index, const std::wstring& value);
@@ -17,4 +18,8 @@ public:
 	word_frequency(std::wistream&);
 	int frequency(const std::wstring& s);
 	int count();
+
+private:
+  std::map<std::wstring, int> data;
+  void ToLower(std::wstring& str);
 };
