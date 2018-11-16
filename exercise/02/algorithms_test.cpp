@@ -58,7 +58,7 @@ public:
 		int x[] = { 3, 5, 10 };
 		std::vector<int> y = { 4, 12, 10 };
 		std::vector<double> d;
-    std::transform(std::begin(x), std::end(x), y.begin(), std::back_inserter(d), [](auto const& x, auto const& y) { return std::hypot(x, y); });
+    std::transform(std::begin(x), std::end(x), y.begin(), std::back_inserter(d), std::hypotl);
 		Assert::AreEqual(3u, d.size());
 		Assert::AreEqual(5., d[0]);
 		Assert::AreEqual(13., d[1]);
@@ -73,7 +73,7 @@ public:
 	TEST_METHOD(test_04b)
 	{
 		std::vector<std::wstring> v { L"A", L"V", L"L", L"!" };
-    auto res = std::accumulate(v.cbegin(), v.cend(), std::wstring(L"GO "), [](std::wstring r, std::wstring const& v) { return r + v; });
+    auto res = std::accumulate(v.cbegin(), v.cend(), std::wstring(L"GO "));
 		Assert::AreEqual(L"GO AVL!", res.c_str());
 	}
 	TEST_METHOD(test_04c)
@@ -93,7 +93,7 @@ public:
 	TEST_METHOD(test_05b)
 	{
 		std::vector<double> v { 1.5, 8, -11.23, 0, 1e10, 1e10, 1e10, 0, 99 };
-    auto number_of_invalid = std::count_if(v.begin(), v.end(), [](auto const& v) { return v == 1e10; });
+    auto number_of_invalid = std::count(v.begin(), v.end(), 1e10);
 		Assert::AreEqual(3, number_of_invalid);
 	}
 	TEST_METHOD(test_05c)
@@ -189,7 +189,7 @@ public:
 	{
 		std::vector<int> atp_points { 8445, 7480, 6220, 5300, 5285 };
 		// the most interesting match is the one with the smallest difference
-    auto smallest_difference = [&atp_points, v = atp_points, diff = std::vector<int>()]() mutable { std::rotate(v.begin(), v.end() - 1, v.end()); std::transform(v.begin(), v.end(), atp_points.begin(), std::back_inserter(diff), [](auto const& l, auto const& r) { return std::abs(l - r); }); return *std::min_element(diff.cbegin(), diff.cend()); }();
+    auto smallest_difference = [&atp_points, diff = std::vector<int>()]() mutable { std::adjacent_difference(atp_points.cbegin(), atp_points.cend(), std::back_inserter(diff), [](auto const& a, auto const& b) { return std::abs(a - b); }); return *std::min_element(diff.cbegin(), diff.cend()); }();
 		Assert::AreEqual(15, smallest_difference);
 	}
 };
