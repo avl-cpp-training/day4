@@ -79,7 +79,7 @@ public:
   TEST_METHOD(test_04b)
 	{
 		std::vector<std::wstring> v { L"A", L"V", L"L", L"!" };
-    auto res = std::accumulate(v.begin(), v.end(), std::wstring(L"GO "), [](auto& a, auto& b) { return a + b; });
+    auto res = std::accumulate(v.begin(), v.end(), std::wstring(L"GO "), std::plus<std::wstring>());
 
 		Assert::AreEqual(L"GO AVL!", res.c_str());
 	}
@@ -101,7 +101,7 @@ public:
   TEST_METHOD(test_05b)
 	{
 		std::vector<double> v { 1.5, 8, -11.23, 0, 1e10, 1e10, 1e10, 0, 99 };
-    auto number_of_invalid = std::count_if(v.begin(), v.end(), [](auto current) { return current == 1e10; });
+    auto number_of_invalid = std::count(v.begin(), v.end(), 1e10);
 		Assert::AreEqual(3, number_of_invalid);
 	}
   
@@ -140,7 +140,7 @@ public:
   TEST_METHOD(test_08a)
 	{
 		std::vector<double> v{ 1e10, 8, -11.23, 0, 1e10, 1e10, 1e10, 0, 99 };
-    v.erase(std::remove_if(v.begin(), v.end(), [](auto current) { return current == 1e10; }), v.end());
+    v.erase(std::remove(v.begin(), v.end(), 1e10), v.end());
 
 		Assert::AreEqual(5u, v.size());
 		Assert::AreEqual(8., v[0]);
@@ -202,7 +202,13 @@ public:
 	{
 		std::vector<int> atp_points { 8445, 7480, 6220, 5300, 5285 };
 		// the most interesting match is the one with the smallest difference
-    auto smallest_difference = std::abs(*(std::adjacent_difference(atp_points.begin(), atp_points.end(), atp_points.begin()) - 1));
+    std::vector<int> buffer;
+    std::adjacent_difference(
+      atp_points.cbegin(),
+      atp_points.cend(),
+      std::back_inserter(buffer),
+      [](auto first, auto second) {return std::abs(first - second); });
+    auto smallest_difference = *std::min_element(buffer.cbegin() + 1, buffer.cend());
 		Assert::AreEqual(15, smallest_difference);
 	}
 };
