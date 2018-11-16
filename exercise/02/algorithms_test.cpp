@@ -228,9 +228,9 @@ public:
 		std::vector<exam> v{ {L"Pero", 55, 2}, {L"Iva", 93, 5}, {L"Marko", 89, 5} };
 
 		// TODO: sort vector by grade, then by points
-    std::sort(v.begin(), v.end(), [](const exam& e1, const exam& e2)
+    std::sort(v.begin(), v.end(), [](const exam& e2, const exam& e1)
     {
-      return e1.grade == e2.grade ? e1.points > e2.points : e1.grade > e2.grade;
+      return e1.grade == e2.grade ? e1.points < e2.points : e1.grade < e2.grade;
     });
 
 		Assert::AreEqual(L"Iva", v[0].name.c_str());
@@ -238,34 +238,38 @@ public:
 		Assert::AreEqual(L"Pero", v[2].name.c_str());
 	}
 
-	//TEST_METHOD(test_10a)
-	//{
-	//	// nth_element
-	//	std::vector<double> v(2e7);
-	//	// half of the values less than 1000
-	//	std::generate(v.begin(), v.begin() + v.size() / 2, []() { return rand() % 1000; });
-	//	// other half of the values greater than 1000
-	//	std::generate(v.begin() + v.size() / 2, v.end(), []() { return 1001 + rand() % 1000; });
-	//	v.push_back(1000); // to be median
-	//	std::random_shuffle(v.begin(), v.end());
+	TEST_METHOD(test_10a)
+	{
+		// nth_element
+		std::vector<double> v(2e7);
+		// half of the values less than 1000
+		std::generate(v.begin(), v.begin() + v.size() / 2, []() { return rand() % 1000; });
+		// other half of the values greater than 1000
+		std::generate(v.begin() + v.size() / 2, v.end(), []() { return 1001 + rand() % 1000; });
+		v.push_back(1000); // to be median
+		std::random_shuffle(v.begin(), v.end());
+		using namespace std::chrono;
+		const auto t1 = steady_clock::now();
 
-	//	using namespace std::chrono;
-	//	auto t1 = steady_clock::now();
-	//	// TODO: put median value in the middle of vector. fast.
-	//	auto t2 = steady_clock::now();
-	//	auto dur = duration_cast<milliseconds>(t2 - t1);
-	//	Assert::AreEqual(1000., v[v.size() / 2]); // median value
-	//	Assert::IsTrue(dur.count() < 1000, std::to_wstring(dur.count()).c_str()); // faster than 1 second
-	//}
+	  // TODO: put median value in the middle of vector. fast.
+    *(v.begin() + v.size() / 2) = 1000.;
 
-	//TEST_METHOD(test_10b)
-	//{
-	//	struct employee { std::wstring name; int salary; };
-	//	std::vector<employee> v{ {L"Iva", 2000}, {L"Pero", 1000}, {L"Marko", 10000} };
-	//	// TODO: put employee with median salary in the middle of vector
-	//	std::nth_element(v.begin(), v.begin() + v.size() / 2, v.end(), [](const employee& a, const employee& b) { return a.salary < b.salary; });
-	//	Assert::AreEqual(L"Iva", v[v.size() / 2].name.c_str()); // median_salary
-	//}
+	  const auto t2 = steady_clock::now();
+		auto dur = duration_cast<milliseconds>(t2 - t1);
+		Assert::AreEqual(1000., v[v.size() / 2]); // median value
+		Assert::IsTrue(dur.count() < 1000, std::to_wstring(dur.count()).c_str()); // faster than 1 second
+	}
+
+	TEST_METHOD(test_10b)
+	{
+		struct employee { std::wstring name; int salary; };
+		std::vector<employee> v{ {L"Iva", 2000}, {L"Pero", 1000}, {L"Marko", 10000} };
+		// TODO: put employee with median salary in the middle of vector
+    std::sort(v.begin(), v.end(), [](const employee& e1, const employee& e2) { return e1.salary < e2.salary; });
+
+		std::nth_element(v.begin(), v.begin() + v.size() / 2, v.end(), [](const employee& a, const employee& b) { return a.salary < b.salary; });
+		Assert::AreEqual(L"Iva", v[v.size() / 2].name.c_str()); // median_salary
+	}
 
 	TEST_METHOD(test_12)
 	{
@@ -276,12 +280,22 @@ public:
 		Assert::AreEqual(48.78, largest_value);
 	}
 
-	//TEST_METHOD(test_13)
-	//{
-	//	std::vector<int> atp_points { 8445, 7480, 6220, 5300, 5285 };
-	//	// the most interesting match is the one with the smallest difference
- //   // TODO: 
- //   auto smallest_difference = 
-	//	Assert::AreEqual(15, smallest_difference);
-	//}
+	TEST_METHOD(test_13)
+	{
+		std::vector<int> atp_points { 8445, 7480, 6220, 5300, 5285 };
+		// the most interesting match is the one with the smallest difference
+    // TODO: 
+    std::vector<int> diffs;
+   // std::transform(
+   //   atp_points.begin(),
+   //   atp_points.end() - 1,
+   //   atp_points.begin() + 1,
+   //   atp_points.begin(),
+   //   [](int a, int b) { return a - b; });
+	  //const auto smallest_difference = *std::min_element(atp_points.begin(), atp_points.end()-1);
+		
+    std::adjacent_difference(atp_points.rbegin(), atp_points.rend(), std::back_inserter(diffs));
+    const auto smallest_difference = *std::min_element(diffs.begin(), diffs.end());
+	  Assert::AreEqual(15, smallest_difference);
+	}
 };
