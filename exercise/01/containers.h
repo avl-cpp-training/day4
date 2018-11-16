@@ -13,6 +13,7 @@ int unique_numbers(std::wistream&);
 
 class word_frequency
 {
+  std::wstring text;
 public:
 	word_frequency(std::wistream&);
 	int frequency(const std::wstring& s);
