@@ -85,8 +85,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="containers.cpp" />
     <ClCompile Include="containers_test.cpp" />
+    <ClCompile Include="containers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="containers.h" />
