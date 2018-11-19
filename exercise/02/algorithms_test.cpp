@@ -250,12 +250,9 @@ public:
 		auto t1 = steady_clock::now();
 		
 	  // TODO: put median value in the middle of vector. fast.
-    //std::sort(v.begin(), v.end(), [](double const d1, double const d2) {return d1 < d2;  });
-    //auto it1 = std:: partition(v.begin(), v.end(), [](double d) { return d < 1000; });
-    //auto it2 = std::partition(it1, v.end(), [](double d) { return d < 1001; });
 
-    std::partition(std::partition(v.begin(), v.end(), [](double d) { return d < 1000; }), v.end(), [](double d) { return d < 1001; });
-    
+    std::nth_element(v.begin(), v.begin() + v.size() / 2, v.end());
+    //std::partition(std::partition(v.begin(), v.end(), [](double d) { return d < 1000; }), v.end(), [](double d) { return d < 1001; });
 	  auto t2 = steady_clock::now();
 		auto dur = duration_cast<milliseconds>(t2 - t1);
 		Assert::AreEqual(1000., v[v.size() / 2]); // median value
