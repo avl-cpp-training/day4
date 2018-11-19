@@ -71,14 +71,14 @@ public:
 	{
 		std::wstringstream ss(L"1.5 2.5 3.5");
 		//auto res = // TODO: sum of all values in input stream
-    auto res = std::accumulate(std::istream_iterator<double, wchar_t>(ss), std::istream_iterator<double, wchar_t>(), 0., [](double sum, auto x) {return sum + x; });
+    auto res = std::accumulate(std::istream_iterator<double, wchar_t>(ss), std::istream_iterator<double, wchar_t>(), 0.);
 		Assert::AreEqual(7.5, res);
 	}
 	TEST_METHOD(test_04b)
 	{
 		std::vector<std::wstring> v { L"A", L"V", L"L", L"!" };
 		//auto res = // TODO: concatenated string with additional prefix 
-    auto res = std::accumulate(std::cbegin(v), std::cend(v), std::wstring(L"GO "), [](std::wstring str, auto&& x) { return str + x; });
+    auto res = std::accumulate(std::cbegin(v), std::cend(v), std::wstring(L"GO "));
 		Assert::AreEqual(L"GO AVL!", res.c_str());
 	}
 	TEST_METHOD(test_04c)
@@ -170,7 +170,7 @@ public:
 		struct exam { std::wstring name; int points, grade; };
 		std::vector<exam> v{ {L"Pero", 55, 2}, {L"Iva", 93, 5}, {L"Marko", 89, 5} };
 		// TODO: sort vector by grade, then by points
-    std::sort(v.begin(), v.end(), [](exam const& x, exam const& y) { return (x.name != y.name) ? x.name < y.name : x.grade < y.grade; });
+    std::sort(v.begin(), v.end(), [](exam const& x, exam const& y) { return (x.grade != y.grade) ? x.grade > y.grade : x.points > y.points; });
 		Assert::AreEqual(L"Iva", v[0].name.c_str());
 		Assert::AreEqual(L"Marko", v[1].name.c_str());
 		Assert::AreEqual(L"Pero", v[2].name.c_str());
