@@ -55,8 +55,9 @@ word_frequency::word_frequency(std::wistream& wis)
 
 int word_frequency::frequency(const std::wstring & s)
 {
-	auto ws = to_lower(s);
-	return word_freq.find(ws) != word_freq.end() ? word_freq[ws] : 0;
+	const auto ws = to_lower(s);
+	const auto it = word_freq.find(ws);
+	return it != word_freq.end() ? it->second : 0;
 }
 
 int word_frequency::count()

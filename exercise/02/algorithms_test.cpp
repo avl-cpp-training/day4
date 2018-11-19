@@ -135,13 +135,10 @@ public:
 		Assert::AreEqual(-1., v[4]);
 		Assert::AreEqual(-1., v[6]);
 	}
-	bool is_vowel(const wchar_t c)
+	bool is_vowel(wchar_t c)
 	{
-		return (c == 'a' || c == 'A' ||
-			c == 'e' || c == 'E' ||
-			c == 'i' || c == 'I' ||
-			c == 'o' || c == 'O' ||
-			c == 'u' || c == 'U');
+		c = towlower(c);
+		return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' );
 	}
 
 	TEST_METHOD(test_07b)
@@ -176,18 +173,14 @@ public:
 			std::wstring name; int points, grade; 
 			bool operator<(const exam& other)
 			{
-				if (grade < other.grade) return true;
-				if (grade > other.grade) return false;
-				if (points < other.points) return true;
-				if (points > other.points) return false;
-				return false;
+				return grade != other.grade ? grade < other.grade : points < other.points;
 			}
 		};
 
 		std::vector<exam> v{ {L"Pero", 55, 2}, {L"Iva", 93, 5}, {L"Marko", 89, 5} };
 		// TODO: sort vector by grade, then by points
-		std::sort(v.begin(), v.end());
-		std::reverse(v.begin(), v.end());
+		std::sort(v.rbegin(), v.rend());
+		//std::sort(v.begin(), v.end(), [](const exam& l, const exam& r) { return l.grade != r.grade ? l.grade > r.grade : l.points > r.points; });
 		Assert::AreEqual(L"Iva", v[0].name.c_str());
 		Assert::AreEqual(L"Marko", v[1].name.c_str());
 		Assert::AreEqual(L"Pero", v[2].name.c_str());
