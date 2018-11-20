@@ -8,6 +8,24 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 #include <numeric>
 #include <chrono>
 
+namespace
+{
+bool is_vowel(wchar_t c)
+{
+	c = towlower(c);
+	return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u');
+}
+
+bool is_prime(int n)
+{
+	for (int i = 2; i <= n / 2; ++i)
+	{
+		if (n%i == 0)
+			return false;
+	}
+	return true;
+}
+}
 TEST_CLASS(test_standard_algorithms_usage)
 {
 public:
@@ -110,20 +128,10 @@ public:
 		Assert::AreEqual(2, number_in_first_quadrant);
 	}
 
-	bool is_prime(int n)
-	{
-		for (int i = 2; i <= n / 2; ++i)
-		{
-			if (n%i == 0)
-				return false;
-		}
-		return true;
-	}
-
 	TEST_METHOD(test_06)
 	{
 		std::vector<int> v { 33, 16, 24, 41, 25, 19, 9 };
-		auto first_prime = *std::find_if(v.begin(), v.end(), [&](int val) {return is_prime(val); });
+		auto first_prime = *std::find_if(v.begin(), v.end(), is_prime);
 		Assert::AreEqual(41, first_prime);
 	}
 	TEST_METHOD(test_07a)
@@ -135,17 +143,12 @@ public:
 		Assert::AreEqual(-1., v[4]);
 		Assert::AreEqual(-1., v[6]);
 	}
-	bool is_vowel(wchar_t c)
-	{
-		c = towlower(c);
-		return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' );
-	}
 
 	TEST_METHOD(test_07b)
 	{
 		std::wstring s(L"ponedjeljak");
 		// TODO: change every vowel with x 
-		std::replace_if(s.begin(), s.end(), [&](wchar_t c) { return is_vowel(c); }, 'x');
+		std::replace_if(s.begin(), s.end(), is_vowel, 'x');
 		Assert::AreEqual(L"pxnxdjxljxk", s.c_str());
 	}
 	TEST_METHOD(test_08a)
@@ -162,7 +165,7 @@ public:
 	{
 		std::wstring s(L"ponedjeljak");
 		// TODO: delete all vowels 
-		s.erase(std::remove_if(s.begin(), s.end(), [&](wchar_t c) { return is_vowel(c); }), s.end());
+		s.erase(std::remove_if(s.begin(), s.end(), is_vowel), s.end());
 		Assert::AreEqual(L"pndjljk", s.c_str());
 	}
 
